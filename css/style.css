@@ -1,0 +1,636 @@
+/* Variables */
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Sora", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #ffffff;
+  background-color: #000000;
+}
+
+/* Page loader styles */
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.5s ease, transform 0.8s ease;
+}
+
+.page-loader.hidden {
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
+}
+
+.loader-text {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 400;
+  text-align: center;
+}
+
+/*header styles*/
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.8); /* Fallback for IE11 */
+  mix-blend-mode: difference; /* Not supported in IE11 */
+}
+
+/* Fallback for browsers without mix-blend-mode */
+@supports not (mix-blend-mode: difference) {
+  header {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+header .logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+  filter: brightness(0) invert(1); /* Filter just to make the logo white */
+}
+
+header nav {
+  display: flex;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+}
+
+header nav ul li {
+  margin-left: 40px;
+}
+
+header nav ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+header nav ul li a:hover {
+  opacity: 0.8;
+}
+
+header nav ul li a:hover::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #ffffff;
+}
+
+main {
+  min-height: 100vh;
+}
+
+/* Hamburger menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.hamburger span {
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Slider styles */
+.slider-container {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+  background-color: #000000;
+  padding-bottom: 60px;
+}
+
+.slider-content {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; /* Not supported in IE11 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding: 40px;
+  padding-top: 120px;
+}
+
+/* Fallback for browsers without scroll-snap */
+@supports not (scroll-snap-type: x mandatory) {
+  .slider-content {
+    scroll-behavior: smooth;
+  }
+}
+.slider-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Darken non-hovered slider items when one is hovered */
+.slider-content:hover .slider-item {
+  filter: brightness(0.5); /* Darkens non-hovered items */
+  transition: filter 0.3s ease;
+}
+
+.slider-content .slider-item:hover {
+  filter: brightness(1); /* Maintains brightness for the hovered item */
+}
+
+/* Fallback for browsers without filter support */
+@supports not (filter: brightness(0.5)) {
+  .slider-content:hover .slider-item {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+  .slider-content .slider-item:hover {
+    opacity: 1;
+  }
+}
+.slider-item {
+  flex: 0 0 33.33%;
+  width: 33.33%; /* Fallback for IE11 */
+  max-width: 33.33%;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 16/9; /* Not supported in IE11 */
+}
+
+/* Fallback for browsers without aspect-ratio */
+@supports not (aspect-ratio: 16/9) {
+  .slider-item {
+    padding-bottom: 56.25%; /* 9/16 = 56.25% */
+    height: 0;
+  }
+  .slider-item .slider-media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+.slider-media {
+  width: 100%;
+  aspect-ratio: 16/9; /* Not supported in IE11 */
+  position: relative;
+}
+
+/* Fallback for browsers without aspect-ratio */
+@supports not (aspect-ratio: 16/9) {
+  .slider-media {
+    padding-bottom: 56.25%; /* 9/16 = 56.25% */
+    height: 0;
+  }
+  .slider-media img,
+  .slider-media video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+.slider-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.slider-item video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.slider-item:hover video,
+.slider-item.active video {
+  opacity: 1;
+}
+
+.slider-item-info {
+  margin-top: 2vw;
+  padding-left: 4.87203%;
+}
+
+.slider-item-info h2 {
+  color: #ffffff;
+  font-size: 1.5vw;
+  font-weight: bold;
+}
+
+.slider-item-info p {
+  color: #4a4a4a;
+  font-size: 1.12vw;
+  line-height: 1.1;
+  margin-top: 0.5vw;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 12px;
+  font-size: 24px;
+  color: #000;
+  cursor: pointer;
+  z-index: 5;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.slider-arrow-left {
+  left: 10px;
+}
+
+.slider-arrow-right {
+  right: 10px;
+}
+
+.slider-arrow:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.progress-bar {
+  display: block;
+  position: fixed;
+  bottom: 17.5%;
+  left: 50%;
+  width: 25%;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  background: #ffffff;
+  transition: width 0.2s ease;
+}
+
+/* Contact page styles */
+.contact-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 40px 40px; /* Offset for fixed header */
+  background-color: #000000;
+}
+
+.contact-content {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.contact-content h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease; /* Added for hover effect */
+}
+
+.contact-content h1:hover {
+  transform: translateY(-3px); /* Subtle lift effect on hover */
+}
+
+.contact-info {
+  margin-bottom: 30px;
+}
+
+.contact-info p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #ffffff;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease, color 0.3s ease; /* Added for hover effect */
+}
+
+.contact-info p:hover {
+  transform: translateX(5px); /* Slight shift to the right */
+  color: #e0e0e0; /* Lighten text slightly on hover */
+}
+
+.contact-info p strong {
+  font-weight: 600;
+}
+
+.contact-info a {
+  color: #ffffff;
+  text-decoration: none;
+  position: relative; /* For underline effect */
+  transition: color 0.3s ease, transform 0.3s ease; /* Updated for smoother hover */
+}
+
+.contact-info a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #ffffff;
+  transition: width 0.3s ease; /* Smooth underline expansion */
+}
+
+.contact-info a:hover {
+  color: #e0e0e0; /* Lighten link color */
+  transform: translateY(-2px); /* Subtle lift */
+}
+
+.contact-info a:hover::after {
+  width: 100%; /* Expand underline on hover */
+}
+
+.social-media {
+  display: flex;
+  gap: 20px;
+}
+
+.social-icon {
+  transition: transform 0.3s ease; /* Added for hover effect */
+}
+
+.social-icon img {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease; /* Updated for hover */
+  filter: brightness(0) invert(1); /* Makes images appear white */
+}
+
+.social-icon:hover {
+  transform: scale(1.1); /* Slightly enlarge the icon container */
+}
+
+.social-icon:hover img {
+  opacity: 0.9;
+  filter: brightness(1.2) invert(1); /* Brighten slightly while keeping white */
+}
+
+.contact-image {
+  max-width: 50%;
+  transition: transform 0.3s ease; /* Added for hover effect */
+}
+
+.contact-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added for hover */
+}
+
+.contact-image:hover {
+  transform: scale(1.02); /* Subtle zoom on container */
+}
+
+.contact-image:hover img {
+  transform: scale(1.05); /* Slightly larger zoom on image */
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1); /* Add subtle glow shadow */
+}
+
+/* Responsive styles for mobile and Tablet */
+@media screen and (max-width: 820px) {
+  .slider-container {
+    overflow: visible;
+  }
+  .slider-content {
+    flex-direction: column;
+    overflow-x: visible;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    touch-action: pan-y; /* Allow vertical touch scrolling */
+    overscroll-behavior: contain; /* Prevent page scroll interference */
+    padding: 0; /* No padding for full-width slider */
+    padding-top: 80px; /* Adjusted for header */
+    height: auto;
+  }
+  /* Fallback for browsers without scroll-snap */
+  @supports not (scroll-snap-type: y mandatory) {
+    .slider-content {
+      scroll-behavior: smooth;
+    }
+  }
+  .slider-item {
+    flex: 0 0 auto;
+    width: 100%; /* Full width for stacking */
+    max-width: 100%;
+    scroll-snap-align: start;
+    aspect-ratio: 16/9;
+  }
+  .slider-media {
+    aspect-ratio: 16/9;
+    width: 100%;
+  }
+  .slider-item-info {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin-top: 0;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2;
+  }
+  .slider-item-info h2 {
+    font-size: 1.2rem;
+    color: #ffffff;
+  }
+  .slider-item-info p {
+    font-size: 1rem;
+    color: #ffffff;
+  }
+  /* Hide slider arrows on mobile */
+  .slider-arrow {
+    display: none;
+  }
+  .progress-bar {
+    display: block;
+    position: fixed;
+    right: 10px;
+    top: 20%; /* Adjusted to move the progress bar higher, reducing space */
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: none;
+  }
+  .progress-fill {
+    width: 100%;
+    height: 0;
+    background: #ffffff;
+    transition: height 0.2s ease;
+  }
+  header nav {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100vh;
+    background-color: #000000;
+    transition: left 0.3s ease;
+    z-index: 100;
+    padding: 80px 20px;
+  }
+  header nav.active {
+    display: block;
+    left: 0;
+  }
+  header nav ul {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  header nav ul li {
+    margin: 20px 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  header nav ul li:nth-child(1) {
+    --index: 1;
+  }
+  header nav ul li:nth-child(2) {
+    --index: 2;
+  }
+  header nav.active ul li {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(0.1s * var(--index));
+  }
+  header nav ul li a {
+    font-size: 1.5rem;
+  }
+  header nav ul li a:hover::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #ffffff;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .contact-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 0 40px; /* Offset for header, no side padding */
+    margin: 0;
+  }
+  .contact-content {
+    padding: 0 20px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .contact-content h1 {
+    font-size: 2rem;
+  }
+  .contact-info p {
+    font-size: 0.9rem;
+  }
+  .social-media {
+    gap: 15px;
+  }
+  .social-icon img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1); /* Maintain white icons in mobile view */
+  }
+  .contact-image {
+    max-width: 100%;
+    padding: 0 20px;
+    margin-top: 20px;
+  }
+  .contact-image img {
+    border-radius: 4px;
+  }
+}
+/* Styles for larger screens */
+@media screen and (min-width: 821px) and (max-width: 992px) {
+  .slider-item {
+    flex: 0 0 33.33%;
+    width: 33.33%; /* Fallback for IE11 */
+    max-width: 33.33%;
+  }
+  .contact-container {
+    padding: 120px 20px 40px;
+  }
+  .contact-content {
+    padding-right: 20px;
+  }
+  .contact-image {
+    max-width: 45%;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
